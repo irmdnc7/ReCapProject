@@ -1,6 +1,8 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -36,8 +38,29 @@ namespace Business.Constants
 
         public static string InvalidRental = "Araç Kiralanamadı!";
         public static string RentalAdded = "Araç Kiralandı.";
+
         public static string UserAdded = "Kullanıcı Eklendi.";
         public static string UserDeleted = "Kullanıcı Silindi";
         public static string UserUpdated = "Kullanıcı Güncellendi.";
+        public static string UserListed = "Kullanıcılar Listelendi.";
+
+        public static string UserRegistered = "Kullanıcı  kaydedildi.";
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
+        public static string PasswordError = "Şifre Hatalı";
+        public static string SuccessfulLogin = "Giriş başarlı";
+        public static string UserAlreadyExists = "Bu kullanıcı mevcut.";
+        public static string AccessTokenCreated = "Access token oluşturuldu";
+        public static string CardSaved = "Kartınız kaydedildi";
+        public static string CardDeleted = "Kartıznız Silindi";
+
+        public static string AuthorizationDenied = "Yetkiniz yok.";
+
+        public static string ImageLimitExpiredForCar = "Bir arabaya maximum 5 fotoğraf eklenebilir";
+        public static string[] ValidImageFileTypes = { ".JPG", ".JPEG", ".PNG", ".TIF", ".TIFF", ".GIF", ".BMP", ".ICO" };
+        public static string InvalidImageExtension = "Geçersiz dosya uzantısı, fotoğraf için kabul edilen uzantılar" + string.Join(",", ValidImageFileTypes);
+        public static string CarImageMustBeExists = "Böyle bi resim bulunamadı";
+
+        public static string CarHaveNoImage = "Araca ait resim bulunmamaktadır.";
+        public static string PasswordChanged = "Şifre başarıyla değiştirildi.";
     }
 }
