@@ -13,14 +13,16 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal :EfEntityRepositoryBase<Car,ReCapContext>, ICarDal
     {
-        List<CarDetailDto> ICarDal.GetCarDetails()
-        {
+        public List<CarDetailDto> GetAllCarDetailsByFilter(CarDetailFilterDto filterDto)
+        {        
+        
+        
             using (ReCapContext context =new ReCapContext())
             {
-                var result = from c in context.Cars
-                             join b in context.Brands
+                var result = from c in context.Car
+                             join b in context.Brand
                              on c.BrandId equals b.Id
-                             join col in context.Colors
+                             join col in context.Color
                              on c.ColorId equals col.Id
                              select new CarDetailDto
                              {

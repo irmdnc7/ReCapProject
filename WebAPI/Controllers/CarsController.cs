@@ -1,10 +1,12 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -53,6 +55,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
+            Thread.Sleep(millisecondsTimeout: 5000);
             var result = _carService.GetAll();
 
             if (result.Success)
@@ -61,26 +64,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
-        [HttpGet("getcarsbybrandid")]
-        public IActionResult GetCarsByBrandId(int id)
-        {
-            var result = _carService.GetCarsByBrandId(id);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
-        [HttpGet("getcarsbycolorid")]
-        public IActionResult GetCarsByColorId(int id)
-        {
-            var result = _carService.GetCarsByColorId(id);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
+        
+       
        
         [HttpGet("getbyid")]
         public IActionResult GetById(int Id)
@@ -91,6 +76,17 @@ namespace WebAPI.Controllers
                 return Ok(result.Message);
             }
             return BadRequest(result.Message);
+        }
+          [HttpGet("getcarsdetails")]
+        public IActionResult GetCarsDetails([FromQuery]CarDetailFilterDto filterDto)
+        {
+            var test = HttpContext.Request.Query["brandid"];
+            var result = _carService.GetCarsDetails(filterDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
     

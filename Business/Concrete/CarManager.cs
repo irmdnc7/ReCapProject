@@ -20,8 +20,8 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        ICarDal _carDal;    
-       
+        ICarDal _carDal;
+        ICarImagesService _carImagesService;
 
         public CarManager(ICarDal carDal)
         {
@@ -41,23 +41,18 @@ namespace Business.Concrete
                          
         }
         [TransactionScopeAspect]
-        public IResult AddTransactionalTest(Car car)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult(Messages.CarDeleted);
+            _carImagesService.DeleteByCarId(car.Id);
+            return new SuccessResult();
         }
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 22)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
-            }
+           
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
         }
         [CacheAspect]
@@ -66,29 +61,21 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));
         }
 
-        public IDataResult<List<CarDetailDto>>GetCarDetails()
+        public IDataResult<List<Car>> GetCarsByBrand(int brandId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => (p.BrandId) == brandId));
         }
 
-        public IDataResult<CarDetailDto> GetCarDetailsById(int id)
+       
+
+        public IDataResult<List<Car>> GetCarsByColor(int colorId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == colorId));
         }
 
-        public IDataResult<List<Car>> GetCarsByBrandId(int id)
+        public IDataResult<List<CarDetailDto>> GetCarsDetails(CarDetailFilterDto filterDto)
         {
-            return new SuccessDataResult<List<Car>>( _carDal.GetAll(c => c.BrandId == id));
-        }
-
-        public IDataResult<List<Car>> GetCarsByColorId(int id)
-        {
-            return new SuccessDataResult<List<Car>>( _carDal.GetAll(c => c.ColorId == id));
-        }
-
-        public IDataResult<List<CarDetailDto>> GetCarsDetails()
-        {
-            throw new NotImplementedException();
+             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetailsByFilter(filterDto));
         }
 
         public IDataResult<List<CarDetailDto>> GetFilterCar(int brandId, int colorId)
@@ -108,14 +95,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
         
-        IDataResult<List<CarDetailDto>> ICarService.GetCarsByBrandId(int brandId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        IDataResult<List<CarDetailDto>> ICarService.GetCarsByColorId(int colorId)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
